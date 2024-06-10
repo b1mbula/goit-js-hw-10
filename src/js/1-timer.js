@@ -1,7 +1,9 @@
-// Описаний в документації
 import flatpickr from 'flatpickr';
-// Додатковий імпорт стилів
 import 'flatpickr/dist/flatpickr.min.css';
+
+import iziToast from 'izitoast';
+import 'izitoast/dist/css/iziToast.min.css';
+
 const currentTime = Date.now();
 let userSelectedDate;
 const options = {
@@ -12,7 +14,11 @@ const options = {
   onClose(selectedDates) {
     userSelectedDate = selectedDates[0];
     if (userSelectedDate < currentTime) {
-      alert('Please choose a date in the future');
+      iziToast.show({
+        message: 'Please choose a date in the future',
+        backgroundColor: 'red',
+        messageColor: 'white',
+      });
       btnElement.disabled = true;
     } else {
       btnElement.disabled = false;
@@ -38,6 +44,9 @@ btnElement.addEventListener('click', () => {
     const timeObj = convertMs(diff);
     updateTimerDisplay(timeObj);
   }, 1000);
+  setTimeout(() => {
+    clearInterval(setIntervalId);
+  }, timeObj);
 });
 
 function updateTimerDisplay(timeObj) {
